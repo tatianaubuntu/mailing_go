@@ -10,6 +10,8 @@
                 <tr>
                     <th scope="row"> Сообщение:</th>
                     <td> {{ object.message }}</td>
+                    <th scope="row"></th>
+                    <td colspan="2"></td>
                 </tr>
                 <tr>
                     <th scope="row"> Клиенты:</th>
@@ -18,15 +20,29 @@
                         {{ obj }}
                         {% endfor %}
                     </td>
+                    <th scope="row"></th>
+                    <td colspan="2"></td>
                 </tr>
                 <tr>
                     <th scope="row"> Статус:</th>
                     <td> {{ object.status }}</td>
+                    <th scope="row"></th>
+                    <td colspan="2"></td>
                 </tr>
                 <tr>
                     <th scope="row"> Отправка:</th>
                     <td> {{ object.frequency }}</td>
+                    <th scope="row"></th>
+                    <td colspan="2"></td>
                 </tr>
+                <tr>
+                    {% for attempt_item in settings.attempt_set.all %}
+                    <th scope="row"> Попытка отправки:</th>
+                    <td colspan="2">{{ attempt_item.last_attempt_date}}</td>
+                    <th scope="row"> Статус:</th>
+                    <td colspan="2">{{ attempt_item.status}}</td>
+                </tr>
+                {% endfor %}
             </table>
         </div>
     </div>

@@ -34,7 +34,7 @@ class Attempt(models.Model):
         ('успешно', 'успешно'),
         ('не успешно', 'не успешно'),
     )
-    last_attempt_date = models.DateTimeField(verbose_name='дата последней попытки')
+    last_attempt_date = models.DateTimeField(auto_now_add=True, verbose_name='дата последней попытки')
     status = models.CharField(max_length=150, verbose_name='статус попытки', choices=status_tuple, **NULLABLE)
     server_response = models.CharField(max_length=150, verbose_name='ответ почтового сервера', **NULLABLE)
 
