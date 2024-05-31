@@ -1,5 +1,5 @@
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
 from message.models import Message
 
@@ -16,6 +16,17 @@ class MessageDetailView(DetailView):
     extra_context = {
         'title': 'Сообщение'
     }
+
+
+class MessageCreateView(CreateView):
+    model = Message
+    fields = ('subject', 'text',)
+    extra_context = {
+        'title': 'Форма по добавлению'
+    }
+
+    def get_success_url(self):
+        return reverse('client:client_list')
 
 
 class MessageUpdateView(UpdateView):

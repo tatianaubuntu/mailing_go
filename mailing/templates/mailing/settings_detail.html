@@ -1,0 +1,34 @@
+{% extends 'client/base.html' %}
+{% block content %}
+<div class="col-6">
+    <div class="card mb-4 rounded-3 shadow-sm">
+        <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">{{object}}</h4>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <tr>
+                    <th scope="row"> Сообщение:</th>
+                    <td> {{ object.message }}</td>
+                </tr>
+                <tr>
+                    <th scope="row"> Клиенты:</th>
+                    <td>
+                        {% for obj in object.client.all %}
+                        {{ obj }}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"> Статус:</th>
+                    <td> {{ object.status }}</td>
+                </tr>
+                <tr>
+                    <th scope="row"> Отправка:</th>
+                    <td> {{ object.frequency }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -35,6 +35,19 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-crontab"
+version = "0.7.1"
+description = "dead simple crontab powered job scheduling for django"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-crontab-0.7.1.tar.gz", hash = "sha256:1201810a212460aaaa48eb6a766738740daf42c1a4f6aafecfb1525036929236"},
+]
+
+[package.dependencies]
+Django = ">=1.8"
+
+[[package]]
 name = "psycopg2-binary"
 version = "2.9.9"
 description = "psycopg2 - Python-PostgreSQL Database Adapter"
@@ -144,4 +157,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "5735d82e2b95fbbf01a246910ae8bbb7b186f0efc88c20b949108dbe7bbc3061"
+content-hash = "916c9415937b4a7b54d927203606ca69ac1b9dd9e283487b46e169c3a201e2a1"
