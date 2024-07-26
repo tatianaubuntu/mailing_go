@@ -15,11 +15,25 @@ class Settings(models.Model):
         ('запущена', 'запущена'),
     )
     first_mailing_date = models.DateTimeField(verbose_name='дата первой отправки')
-    frequency = models.CharField(max_length=150, verbose_name='периодичность', choices=frequency_tuple)
-    status = models.CharField(max_length=150, verbose_name='статус отправки', choices=status_tuple)
+    frequency = models.CharField(max_length=150,
+                                 verbose_name='периодичность',
+                                 choices=frequency_tuple)
+    status = models.CharField(max_length=150,
+                              verbose_name='статус отправки',
+                              choices=status_tuple)
 
-    message = models.OneToOneField('message.Message', on_delete=models.CASCADE, verbose_name='сообщение', **NULLABLE)
-    client = models.ManyToManyField('client.Client', verbose_name='клиент', **NULLABLE)
+    message = models.OneToOneField('message.Message',
+                                   on_delete=models.CASCADE,
+                                   verbose_name='сообщение',
+                                   **NULLABLE)
+    client = models.ManyToManyField('client.Client',
+                                    verbose_name='клиент',
+                                    **NULLABLE)
+
+    owner = models.ForeignKey('users.User',
+                              on_delete=models.SET_NULL,
+                              help_text='Укажите владельца',
+                              **NULLABLE)
 
     def __str__(self):
         return f'{self.first_mailing_date}'
@@ -27,6 +41,12 @@ class Settings(models.Model):
     class Meta:
         verbose_name = 'настройки'
         verbose_name_plural = 'настройки'
+        permissions = [
+            (
+                'set_status_to_completed',
+                'Can disable mailing'
+            )
+        ]
 
 
 class Attempt(models.Model):
@@ -34,11 +54,19 @@ class Attempt(models.Model):
         ('успешно', 'успешно'),
         ('не успешно', 'не успешно'),
     )
-    last_attempt_date = models.DateTimeField(auto_now_add=True, verbose_name='дата последней попытки')
-    status = models.CharField(max_length=150, verbose_name='статус попытки', choices=status_tuple, **NULLABLE)
-    server_response = models.CharField(max_length=150, verbose_name='ответ почтового сервера', **NULLABLE)
+    last_attempt_date = models.DateTimeField(auto_now_add=True,
+                                             verbose_name='дата последней попытки')
+    status = models.CharField(max_length=150,
+                              verbose_name='статус попытки',
+                              choices=status_tuple,
+                              **NULLABLE)
+    server_response = models.CharField(max_length=150,
+                                       verbose_name='ответ почтового сервера',
+                                       **NULLABLE)
 
-    mailing = models.ForeignKey(Settings, on_delete=models.CASCADE, verbose_name='рассылка')
+    mailing = models.ForeignKey(Settings,
+                                on_delete=models.CASCADE,
+                                verbose_name='рассылка')
 
     def __str__(self):
         return f'{self.last_attempt_date}'

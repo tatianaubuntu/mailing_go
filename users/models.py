@@ -9,6 +9,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, verbose_name='почта')
 
     token = models.CharField(max_length=100, verbose_name='токен', **NULLABLE)
+    is_active = models.BooleanField(default=True, verbose_name='активный')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -19,3 +20,10 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
+        permissions = [
+            (
+                'set_not_active',
+                'May block users'
+            )
+        ]
+        

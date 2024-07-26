@@ -10,10 +10,14 @@
             <div class="btn-group" role="group" aria-label="Basic outlined example">
                 <a href="{% url 'message:message_detail' object.pk %}" type="button"
                    class="w-100 btn btn-outline-success">Открыть</a>
+                {% if perms.message.change_message or user == object.owner %}
                 <a href="{% url 'message:message_update' object.pk %}" type="button"
                    class="w-100 btn btn-outline-warning">Редактировать</a>
+                {% endif %}
+                {% if perms.message.delete_message or user == object.owner%}
                 <a href="{% url 'message:message_delete' object.pk %}" type="button"
                    class="w-100 btn btn-outline-danger">Удалить</a>
+                {% endif %}
             </div>
         </div>
     </div>

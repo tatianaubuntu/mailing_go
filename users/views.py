@@ -1,14 +1,17 @@
 import secrets
 
+
 from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.views import PasswordResetView
+from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView, ListView
 
 from config import settings
-from users.forms import RegisterForm
+from users.forms import RegisterForm, UserProfileModeratorForm
 from users.models import User
 
 
@@ -41,7 +44,7 @@ def email_verification(request, token):
     return redirect(reverse("users:login"))
 
 
-class GeneratePasswordView(PasswordResetView):
+class GeneratePasswordView(LoginRequiredMixin, PasswordResetView):
     form_class = PasswordResetForm
     template_name = 'users/generate.html'
 
@@ -60,3 +63,19 @@ class GeneratePasswordView(PasswordResetView):
                     [user.email],
                     )
             return redirect(reverse("users:login"))
+
+
+class ProfileListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = User
+    permission_required = 'users.view_user'
+
+
+class ProfileModeratorView(LoginRequiredMixin, UpdateView):
+    model = User
+    success_url = reverse_lazy('users:user_list')
+
+    def get_form_class(self):
+        user = self.request.user
+        if user.has_perm('users.set_not_active'):
+            return UserProfileModeratorForm
+        raise PermissionDenied

@@ -10,6 +10,9 @@
         <a class="me-3 py-2 text-dark text-decoration-none btn btn-outline-primary" href="{% url 'users:login' %}">Войти</a>
         <a class="me-3 py-2 text-dark text-decoration-none btn btn-outline-primary" href="{% url 'users:register' %}">Регистрация</a>
         {% endif %}
+        {% if perms.users.view_user %}
+        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'users:user_list' %}">Пользователи</a>
+        {% endif %}
         <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'client:client_list' %}">Клиенты</a>
         <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'message:message_list' %}">Сообщения</a>
         <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'mailing:settings_list' %}">Рассылки</a>
