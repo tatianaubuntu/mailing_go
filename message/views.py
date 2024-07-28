@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
@@ -37,22 +37,30 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class MessageUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class MessageUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Message
-    permission_required = 'message.change_message'
     fields = ('subject', 'text',)
     extra_context = {
         'title': 'Форма по редактированию'
     }
 
     def get_success_url(self):
-        return reverse('message:message_detail', args=[self.kwargs.get('pk')])
+        return reverse('message:message_detail',
+                       args=[self.kwargs.get('pk')])
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.owner == self.request.user or self.request.user.is_superuser
 
 
-class MessageDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class MessageDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Message
     permission_required = 'message.delete_message'
     extra_context = {
         'title': 'Удаление сообщения'
     }
     success_url = reverse_lazy('message:message_list')
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.owner == self.request.user or self.request.user.is_superuser

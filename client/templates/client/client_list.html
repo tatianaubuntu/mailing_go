@@ -11,10 +11,12 @@
             <div class="btn-group" role="group" aria-label="Basic outlined example">
                 <a href="{% url 'client:client_detail' object.pk %}" type="button"
                    class="w-100 btn btn-outline-success">Открыть</a>
+                {% if user.is_superuser or user == object.owner %}
                 <a href="{% url 'client:client_update' object.pk %}" type="button"
                    class="w-100 btn btn-outline-warning">Редактировать</a>
                 <a href="{% url 'client:client_delete' object.pk %}" type="button"
                    class="w-100 btn btn-outline-danger">Удалить</a>
+                {% endif %}
             </div>
         </div>
     </div>

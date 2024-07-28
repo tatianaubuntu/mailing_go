@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
@@ -54,17 +54,20 @@ class SettingsUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_form_class(self):
         user = self.request.user
-        if user.has_perm('mailing.set_status_to_completed'):
-            return SettingsModeratorForm
         if user.is_superuser or user == self.object.owner:
             return SettingsForm
+        elif user.has_perm('mailing.set_status_to_completed'):
+            return SettingsModeratorForm
         raise PermissionDenied
 
 
-class SettingsDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class SettingsDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Settings
-    permission_required = 'mailing.delete_settings'
     extra_context = {
         'title': 'Удаление рассылки'
     }
     success_url = reverse_lazy('mailing:settings_list')
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.owner == self.request.user or self.request.user.is_superuser

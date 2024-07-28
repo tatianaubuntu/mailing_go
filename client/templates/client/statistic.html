@@ -1,0 +1,26 @@
+{% extends 'client/base.html' %}
+{% block content %}
+
+        <table class="table table-striped">
+            <tr>
+                <td>Количество рассылок всего</td>
+                <td>{{mailing_count}}</td>
+            </tr>
+            <tr>
+                <td>Количество активных рассылок</td>
+                <td>{{active_mailing_count}}</td>
+            </tr>
+            <tr>
+                <td>Количество уникальных клиентов для рассылок</td>
+                <td>{{clients_count}}</td>
+            </tr>
+            <tr>
+                <td>Три случайные статьи из блога</td>
+                <td>{% for blog in blog_list %}
+                    {{ blog }}<br>
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+
+{% endblock %}
