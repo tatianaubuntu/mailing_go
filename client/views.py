@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView, TemplateView
 
 from client.models import Client
-from client.services import get_cashe_blog_list
+from client.services import get_cashe_blog_list_and_mailing_count
 from mailing.models import Settings
 
 
@@ -15,9 +15,9 @@ class StatisticTemplateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        context_data['mailing_count'] = get_cashe_blog_list()[1]
+        context_data['mailing_count'] = get_cashe_blog_list_and_mailing_count()[1]
         context_data['active_mailing_count'] = Settings.objects.filter(status='запущена').count()
-        context_data['blog_list'] = get_cashe_blog_list()[0]
+        context_data['blog_list'] = get_cashe_blog_list_and_mailing_count()[0]
         context_data['clients_count'] = Client.objects.all().count()
         return context_data
 

@@ -26,4 +26,3 @@ class User(AbstractUser):
                 'May block users'
             )
         ]
-        

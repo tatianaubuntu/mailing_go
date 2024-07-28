@@ -21,4 +21,3 @@ class SettingsModeratorForm(ModelForm):
         fields = [
             'status',
             ]
-

@@ -7,7 +7,7 @@ from blog.models import Blog
 from mailing.models import Settings
 
 
-def get_cashe_blog_list():
+def get_cashe_blog_list_and_mailing_count():
     if settings.CACHE_ENABLED:
         key1 = 'blog_list'
         key2 = 'mailing_count'
