@@ -36,6 +36,7 @@ def handle_mailing(mailing):
     mailing.first_mailing_date += timedelta(days=days_count)
     mailing.save()
 
+
 def send_mailing_scheduled():
     now = datetime.now()
     before = now + timedelta(minutes=5)

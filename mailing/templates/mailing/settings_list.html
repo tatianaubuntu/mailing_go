@@ -11,10 +11,14 @@
             <div class="btn-group" role="group" aria-label="Basic outlined example">
                 <a href="{% url 'mailing:settings_detail' object.pk %}" type="button"
                    class="w-100 btn btn-outline-success">Открыть</a>
+                {% if perms.mailing.set_status_to_completed or user == object.owner %}
                 <a href="{% url 'mailing:settings_update' object.pk %}" type="button"
                    class="w-100 btn btn-outline-warning">Редактировать</a>
+                {% endif %}
+                {% if perms.mailing.delete_settings or user == object.owner %}
                 <a href="{% url 'mailing:settings_delete' object.pk %}" type="button"
                    class="w-100 btn btn-outline-danger">Удалить</a>
+                {% endif %}
             </div>
         </div>
     </div>
